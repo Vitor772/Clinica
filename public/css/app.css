@@ -1,0 +1,72 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+/* Container principal */
+.container {
+    padding: 30px;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #4e5b6e;
+    margin-bottom: 40px;
+}
+
+/* Estilo para os ícones */
+.icons-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 40px;
+}
+
+.icon-box {
+    font-size: 3.5em;
+    cursor: pointer;
+    transition: color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #4e5b6e;
+}
+
+.icon-box:hover {
+    color: #6c83c7;
+}
+
+.icon-label {
+    font-size: 0.6em;
+    margin-top: 10px;
+    color: #4e5b6e;
+}
+
+/* Estilo para o botão de logout */
+.logout-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+}
