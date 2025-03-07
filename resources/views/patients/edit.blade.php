@@ -60,7 +60,6 @@
 
         /* Estilo para o botão de logout */
         .logout-btn {
-            top: 20px;
             margin-bottom: 820px;
             right: 20px;
             background-color: #e74c3c;
@@ -332,10 +331,18 @@
 </head>
 
 <body>
+    <button class="btn btn-primary" onclick="window.history.back();">Voltar</button>
+
 
     <div class="container">
-        <!-- Botão de Logout no canto superior direito -->
-        <button class="logout-btn" onclick="logout()">Logout</button>
+
+
+        <form action="{{ route('auth.logout') }}" method="POST" id="logout-form" style="display: none;">
+            @csrf
+            @method('POST')
+        </form>
+
+        <button class="logout-btn" onclick="document.getElementById('logout-form').submit();">Logout</button>
 
         <!-- Alterar a action para a rota de atualização e usar o método PUT ou PATCH -->
         <form action="{{ route('patients.update', $patient->id) }}" method="POST">

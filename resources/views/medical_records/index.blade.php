@@ -62,7 +62,6 @@
         /* Estilo para o botão de logout */
         .logout-btn {
             position: absolute;
-            top: 20px;
             margin-bottom: 905px;
             right: 20px;
             background-color: #e74c3c;
@@ -348,6 +347,11 @@
         <div class="logo">
             <img src="images/logo.png" alt="Logo">
         </div>
+
+        <form action="{{ route('auth.logout') }}" method="POST" id="logout-form" style="display: none;">
+            @csrf
+            @method('POST')
+        </form>
 
         <form method="POST" action="{{ route('medical_records.store') }}">
             @csrf <!-- Protege contra CSRF -->

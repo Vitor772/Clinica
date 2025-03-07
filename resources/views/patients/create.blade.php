@@ -60,7 +60,6 @@
 
         /* Estilo para o botão de logout */
         .logout-btn {
-            top: 20px;
             margin-bottom: 820px;
             right: 20px;
             background-color: #e74c3c;
@@ -333,12 +332,15 @@
 
 <body>
 
-    <!-- Botão de Logout no canto superior direito -->
+    <button class="btn btn-primary" onclick="window.history.back();">Voltar</button>
+
 
 
     <div class="container">
-        <!-- Botão de Logout no canto superior direito -->
-        <button class="logout-btn" onclick="logout()">Logout</button>
+        <form action="{{ route('auth.logout') }}" method="POST" id="logout-form" style="display: none;">
+            @csrf
+            @method('POST')
+        </form>
 
         <form action="{{ route('patients.store') }}" method="POST">
             @csrf <!-- Token CSRF para segurança -->

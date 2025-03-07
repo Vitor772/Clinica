@@ -16,7 +16,6 @@ class CreateConsultationsTable extends Migration
         Schema::create('consultations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->constrained()->onDelete('cascade'); // Chave estrangeira para paciente
-            $table->date('data');
             $table->date('consultation_date'); // Data da consulta
             $table->text('description'); // Descrição da consulta
             $table->timestamps(); // Data de criação e atualização

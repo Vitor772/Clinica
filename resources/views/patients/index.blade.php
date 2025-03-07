@@ -50,7 +50,6 @@
         }
 
         .logout-btn {
-            top: 20px;
             margin-bottom: 820px;
             right: 20px;
             background-color: #e74c3c;
@@ -345,12 +344,19 @@
 </head>
 
 <body>
+    <button class="btn btn-primary" onclick="window.history.back();">Voltar</button>
+
     <div class="container">
         <div class="logo">
             <img src="{{ asset('images/logo.png') }}" alt="Logo">
         </div>
         <!-- Botão de Logout no canto superior direito -->
-        <button class="logout-btn" onclick="logout()">Logout</button>
+        <form action="{{ route('auth.logout') }}" method="POST" id="logout-form" style="display: none;">
+            @csrf
+            @method('POST')
+        </form>
+
+        <button class="logout-btn" onclick="document.getElementById('logout-form').submit();">Logout</button>
         <form action="{{ route('patients.index') }}" method="GET">
             @csrf <!-- Token CSRF para segurança -->
             <div class="secao-dados">
@@ -444,7 +450,8 @@
                                     class="btn btn-secondary btn-sm">
                                     <i class="fas fa-file-medical"></i> Prontuário
                                 </a>
-                                <a href="{{ route('consults.index', $patient->id) }}" class="btn btn-secondary btn-sm">
+                                <a href="{{ route('consults.index', $patient->id) }}"
+                                    class="btn btn-secondary btn-sm">
                                     <i class="fas fa-file-medical"></i> Consultas
                                 </a>
                             </td>
