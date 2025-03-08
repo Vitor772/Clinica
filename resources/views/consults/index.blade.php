@@ -344,9 +344,10 @@
 </head>
 
 <body>
-    <button class="btn btn-primary" onclick="window.history.back();">Voltar</button>
 
     <div class="container">
+        <a class="btn btn-primary" onclick="window.history.back();">Voltar</a>
+
         <div class="logo">
             <img src="{{ asset('images/logo.png') }}" alt="Logo">
         </div>

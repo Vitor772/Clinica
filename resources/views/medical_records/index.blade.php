@@ -1,14 +1,13 @@
-<!-- resources/views/medical_records/create.blade.php -->
-
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prontuários</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"></script>
+    <title>Lista de Prontuários</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* Estilos base (para todos os dispositivos) */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7fc;
@@ -18,13 +17,10 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            /* Mudado para flex-start para permitir que o conteúdo cresça */
             flex-direction: column;
             box-sizing: border-box;
             height: 100%;
-            /* Garantir que o body ocupe toda a altura */
             overflow: auto;
-            /* Permite que o conteúdo com overflow mostre uma barra de rolagem */
         }
 
         .container {
@@ -32,10 +28,9 @@
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 800px;
+            width: 90%;
+            max-width: 1200px;
             margin: 30px auto;
-            /* Centraliza o conteúdo horizontalmente */
             position: relative;
         }
 
@@ -46,7 +41,6 @@
             margin-bottom: 30px;
         }
 
-        /* Logo */
         .logo {
             text-align: center;
             margin-bottom: 30px;
@@ -54,15 +48,12 @@
 
         .logo img {
             max-width: 250px;
-            /* Ajusta o tamanho máximo da logo */
             height: auto;
-            /* Mantém a proporção da imagem */
         }
 
-        /* Estilo para o botão de logout */
+        /* Botão Logout (estilo original) */
         .logout-btn {
-            position: absolute;
-            margin-bottom: 905px;
+            margin-bottom: 820px;
             right: 20px;
             background-color: #e74c3c;
             color: white;
@@ -77,11 +68,10 @@
             background-color: #c0392b;
         }
 
-        /* Estilo para o resto da página */
+        /* Restante do CSS (mantido igual) */
         .campo {
             margin-bottom: 20px;
         }
-
 
         .campo label {
             font-size: 1.1em;
@@ -265,17 +255,8 @@
             margin-top: 40px;
         }
 
-        .texto-justificado {
-            text-align: justify;
-            font-size: 1em;
-            color: #333;
-            margin-top: 20px;
-        }
-
-        /* Adicionando estilo para os campos Data, Psicóloga e CRP na mesma linha */
         .campo-dados {
             display: flex;
-            justify-content: space-between;
             gap: 15px;
             flex-wrap: wrap;
         }
@@ -284,12 +265,10 @@
             width: 32%;
         }
 
-        /* Garantindo que o campo Data tenha o layout correto */
         .campo-dados .campo-fixo[data-label="data"] {
             width: 100%;
         }
 
-        /* Espaço entre os campos e o título "Entrevista" */
         .espaco-entre-campos-e-titulo {
             margin-bottom: 30px;
         }
@@ -302,18 +281,12 @@
             margin-top: 40px;
         }
 
-        /* Seção de Dados - Fundo claro para os campos */
         .secao-dados {
             background-color: #f4f7fc;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 30px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Estilo para o campo de descrição */
-        .campo-text {
-            margin-top: 30px;
         }
 
         .campo-text textarea {
@@ -336,122 +309,233 @@
             margin-bottom: 10px;
             display: block;
         }
+
+        .secao-gravidez {
+            background-color: #f4f7fc;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilos para a tabela */
+        .table {
+            background-color: #f4f7fc;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .table th,
+        .table td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f3f4f8;
+            color: #4e5b6e;
+            font-weight: bold;
+        }
+
+        .table td {
+            background-color: #fff;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #e8effd;
+        }
+
+        /* Media Queries para Responsividade */
+
+        /* Dispositivos com largura até 768px (Tablets e Smartphones) */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .logo img {
+                max-width: 200px;
+            }
+
+            .campo .linha,
+            .campo-dados {
+                flex-direction: column;
+            }
+
+            .campo .campo-fixo,
+            .campo-dados .campo-fixo {
+                width: 100%;
+            }
+
+            button {
+                font-size: 1em;
+                padding: 10px 15px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .titulo-entrevista {
+                font-size: 1.6em;
+            }
+
+            .analisetitulo {
+                font-size: 1.5em;
+            }
+
+            .campo-text textarea {
+                height: 120px;
+            }
+        }
+
+        /* Dispositivos com largura até 480px (Smartphones pequenos) */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+            button {
+                font-size: 0.9em;
+                padding: 8px 12px;
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .titulo-entrevista {
+                font-size: 1.4em;
+            }
+
+            .analisetitulo {
+                font-size: 1.3em;
+            }
+
+            .campo-text textarea {
+                height: 100px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- Botão de Logout no canto superior direito -->
-    <button class="logout-btn" onclick="logout()">Logout</button>
     <div class="container">
-        <div class="logo">
-            <img src="images/logo.png" alt="Logo">
-        </div>
+        <a class="btn btn-primary" onclick="window.history.back();">Voltar</a>
 
+        <div class="logo">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo">
+        </div>
+        <!-- Botão de Logout no canto superior direito -->
         <form action="{{ route('auth.logout') }}" method="POST" id="logout-form" style="display: none;">
             @csrf
             @method('POST')
         </form>
 
-        <form method="POST" action="{{ route('medical_records.store') }}">
-            @csrf <!-- Protege contra CSRF -->
-
+        <button class="logout-btn" onclick="document.getElementById('logout-form').submit();">Logout</button>
+        <form action="{{ route('medical_records.index') }}" method="GET">
+            @csrf <!-- Token CSRF para segurança -->
             <div class="secao-dados">
-                <!-- Campos Data, Psicóloga e CRP na mesma linha -->
                 <div class="campo campo-dados">
                     <div class="campo-fixo">
-                        <label for="data" data-label="data">Data:</label>
-                        <input type="date" id="data" name="data" value="{{ old('data') }}"
+                        <label for="data">Data:</label>
+                        <input type="date" id="data" name="data" value=""
                             placeholder="Clique para selecionar a data">
                     </div>
                     <div class="campo-fixo">
-                        <label for="paciente">Paciente:</label>
-                        <select name="patient_id" id="paciente" required>
-                            <option value="">Selecione um paciente</option>
-                            @foreach ($patients as $patient)
-                                <option value="{{ $patient->id }}">{{ $patient->name }}</option>
-                            @endforeach
-                        </select>
+                        <label for="patient_name">Paciente:</label>
+                        <input type="text" id="patient_name" name="patient_name"
+                            placeholder="Digite o nome do paciente" value="{{ request()->input('patient_name') }}">
                     </div>
                     <div class="campo-fixo">
-                        <label for="idade">Idade:</label>
-                        <input type="number" id="idade" name="idade" placeholder="Idade" required>
+                        <label for="age">Idade:</label>
+                        <input type="number" id="age" name="age" placeholder="Idade"
+                            value="{{ request()->input('age') }}">
                     </div>
                 </div>
 
-                <!-- Campos Estado Civil, RG e Responsável -->
                 <div class="campo linha">
                     <div class="campo-fixo">
-                        <label for="estado-civil">Estado civil:</label>
-                        <input type="text" id="estado-civil" name="estado-civil" placeholder="Estado civil" required>
+                        <label for="marital_status">Estado Civil:</label>
+                        <input type="text" id="marital_status" name="marital_status" placeholder="Estado civil"
+                            value="{{ request()->input('marital_status') }}">
                     </div>
                     <div class="campo-fixo">
                         <label for="rg">RG:</label>
-                        <input type="text" id="rg" name="rg" placeholder="RG" required maxlength="12"
-                            oninput="formatarRG(this)" pattern="\d{2}\.\d{3}\.\d{3}-\d{1}"
-                            title="O RG deve seguir o formato XX.XXX.XXX-X">
+                        <input type="text" id="rg" name="rg" placeholder="RG"
+                            value="{{ request()->input('rg') }}" maxlength="12" oninput="formatarRG(this)"
+                            pattern="\d{2}\.\d{3}\.\d{3}-\d{1}" title="O RG deve seguir o formato XX.XXX.XXX-X">
                     </div>
                     <div class="campo-fixo">
-                        <label for="responsavel">Responsável</label>
-                        <input type="text" id="nome-pai" name="responsavel" placeholder="Responsável" required>
+                        <label for="responsible">Responsável:</label>
+                        <input type="text" id="responsible" name="responsible" placeholder="Responsável"
+                            value="{{ request()->input('responsible') }}">
                     </div>
                 </div>
 
+                <div class="text-center">
+                    <button type="submit" style="background-color:#6c83c7;" class="btn btn-primary">Aplicar
+                        Filtros</button>
+                </div>
             </div>
-
-            <!-- Sessão Histórico Médico -->
-            <div class="campo-text">
-                <label for="historico_medico">Histórico Médico:</label>
-                <textarea id="historico_medico" name="medical_history" placeholder="Insira o histórico médico do paciente.">{{ old('medical_history') }}</textarea>
-            </div>
-
-            <!-- Sessão Demanda -->
-            <div class="campo-text">
-                <label for="demanda">Demanda inicial:</label>
-                <textarea id="demanda" name="initial_demand"
-                    placeholder="Insira aqui informações sobre a demanda inicial do paciente.">{{ old('initial_demand') }}</textarea>
-            </div>
-
-            <!-- Seção de Objetivos -->
-            <div class="campo-text">
-                <label for="objetivos">Objetivos do tratamento:</label>
-                <textarea id="objetivos" name="treatment_goals" placeholder="Insira aqui os objetivos do tratamento.">{{ old('treatment_goals') }}</textarea>
-            </div>
-
-            <!-- Seção de Evolução -->
-            <div class="campo-text">
-                <label for="evolucao">Evolução:</label>
-                <textarea id="evolucao" name="evolution" placeholder="Insira aqui as evoluções do tratamento.">{{ old('evolution') }}</textarea>
-            </div>
-
-            <!-- Seção de Descrição -->
-            <div class="campo-text">
-                <label for="gerais">Informações gerais:</label>
-                <textarea id="gerais" name="general_info" placeholder="Insira outras informações gerais sobre o paciente.">{{ old('general_info') }}</textarea>
-            </div>
-
-            <button type="submit">Criar Prontuário</button>
         </form>
+
+
+        <!-- Título -->
+        <h1 class="text-center mb-4">Lista de Prontuários</h1>
+
+        <!-- Botão para adicionar novo prontuário -->
+        <div class="text-end mb-4">
+            <a style="background-color:#6c83c7;" href="{{ route('medical_records.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Adicionar Novo Prontuário
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Idade</th>
+                        <th>Estado Civil</th>
+                        <th>RG</th>
+                        <th>Responsável</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($medicalRecords as $record)
+                        <tr>
+                            <td>{{ $record->patient->name }}</td>
+                            <td>{{ $record->patient->age }}</td>
+                            <td>{{ $record->patient->civil_status }}</td>
+                            <td>{{ $record->patient->id_gov }}</td>
+                            <td>{{ $record->patient->responsable }}</td>
+                            <td>
+                                <!-- Link para visualizar detalhes -->
+                                <a href="{{ route('medical_records.show', $record->id) }}" class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i> Ver
+                                </a>
+
+                                <!-- Link para editar -->
+                                <a href="{{ route('medical_records.edit', $record->id) }}"
+                                    class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    <script>
-        // Função para aplicar a máscara no campo RG
-        function formatarRG(input) {
-            let valor = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
-            if (valor.length <= 2) {
-                input.value = valor;
-            } else if (valor.length <= 5) {
-                input.value = valor.replace(/(\d{2})(\d{1,3})/, '$1.$2');
-            } else if (valor.length <= 8) {
-                input.value = valor.replace(/(\d{2})(\d{3})(\d{1,3})/, '$1.$2.$3');
-            } else if (valor.length <= 10) {
-                input.value = valor.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/, '$1.$2.$3-$4');
-            } else {
-                input.value = valor.replace(/(\d{2})(\d{3})(\d{3})(\d{1})(\d{1})/, '$1.$2.$3-$4');
-            }
-        }
-    </script>
-
+    </div>
 </body>
 
 </html>

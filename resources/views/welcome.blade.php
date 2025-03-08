@@ -8,13 +8,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/app.css">
 </head>
+<style>
+    .logo {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .logo img {
+        max-width: 250px;
+        height: auto;
+    }
+</style>
 
 <body>
 
     <button class="logout-btn" onclick="logout()">Logout</button>
 
     <div class="container">
-        <h1>Menu</h1>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+        </div>
+
         <br><br><br><br><br><br>
 
         <div class="icons-container">
@@ -32,14 +46,7 @@
         </div>
     </div>
 
-    <script>
-        // Função de logout
-        function logout() {
-            localStorage.removeItem('autenticado');
-            // Redireciona para a página de login
-            window.location.href = 'index.html';
-        }
-    </script>
+
 
 </body>
 

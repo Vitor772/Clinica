@@ -1,13 +1,13 @@
-<!-- resources/views/medical_records/create.blade.php -->
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prontuários</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"></script>
+    <title>Detalhes do Prontuário</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,13 +18,10 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            /* Mudado para flex-start para permitir que o conteúdo cresça */
             flex-direction: column;
             box-sizing: border-box;
             height: 100%;
-            /* Garantir que o body ocupe toda a altura */
             overflow: auto;
-            /* Permite que o conteúdo com overflow mostre uma barra de rolagem */
         }
 
         .container {
@@ -35,7 +32,6 @@
             width: 100%;
             max-width: 800px;
             margin: 30px auto;
-            /* Centraliza o conteúdo horizontalmente */
             position: relative;
         }
 
@@ -46,7 +42,6 @@
             margin-bottom: 30px;
         }
 
-        /* Logo */
         .logo {
             text-align: center;
             margin-bottom: 30px;
@@ -54,16 +49,11 @@
 
         .logo img {
             max-width: 250px;
-            /* Ajusta o tamanho máximo da logo */
             height: auto;
-            /* Mantém a proporção da imagem */
         }
 
-        /* Estilo para o botão de logout */
         .logout-btn {
-            position: absolute;
-            top: 20px;
-            margin-bottom: 905px;
+            margin-bottom: 820px;
             right: 20px;
             background-color: #e74c3c;
             color: white;
@@ -78,7 +68,6 @@
             background-color: #c0392b;
         }
 
-        /* Estilo para o resto da página */
         .campo {
             margin-bottom: 20px;
         }
@@ -89,7 +78,8 @@
             color: #4e5b6e;
         }
 
-        .campo input {
+        .campo input,
+        .campo textarea {
             width: 100%;
             padding: 12px;
             font-size: 1em;
@@ -98,6 +88,8 @@
             background-color: #f9f9f9;
             color: #333;
             box-sizing: border-box;
+            resize: none;
+            /* Impede o redimensionamento */
         }
 
         .campo input[type="date"] {
@@ -124,7 +116,8 @@
 
         .campo input[type="date"]:focus,
         .campo input[type="text"]:focus,
-        .campo input[type="number"]:focus {
+        .campo input[type="number"]:focus,
+        .campo textarea:focus {
             outline: none;
             border-color: #6c83c7;
             background-color: #e8effd;
@@ -265,17 +258,8 @@
             margin-top: 40px;
         }
 
-        .texto-justificado {
-            text-align: justify;
-            font-size: 1em;
-            color: #333;
-            margin-top: 20px;
-        }
-
-        /* Adicionando estilo para os campos Data, Psicóloga e CRP na mesma linha */
         .campo-dados {
             display: flex;
-            justify-content: space-between;
             gap: 15px;
             flex-wrap: wrap;
         }
@@ -284,12 +268,10 @@
             width: 32%;
         }
 
-        /* Garantindo que o campo Data tenha o layout correto */
         .campo-dados .campo-fixo[data-label="data"] {
             width: 100%;
         }
 
-        /* Espaço entre os campos e o título "Entrevista" */
         .espaco-entre-campos-e-titulo {
             margin-bottom: 30px;
         }
@@ -302,18 +284,12 @@
             margin-top: 40px;
         }
 
-        /* Seção de Dados - Fundo claro para os campos */
         .secao-dados {
             background-color: #f4f7fc;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 30px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Estilo para o campo de descrição */
-        .campo-text {
-            margin-top: 30px;
         }
 
         .campo-text textarea {
@@ -336,81 +312,89 @@
             margin-bottom: 10px;
             display: block;
         }
+
+        .secao-gravidez {
+            background-color: #f4f7fc;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
 <body>
+    <!-- Botão de Logout no canto superior direito -->
+    <button class="logout-btn" onclick="logout()">Logout</button>
     <div class="container">
-        <h1>Detalhes do Paciente: {{ $patient->name }}</h1>
+        <a class="btn btn-primary" onclick="window.history.back();">Voltar</a>
 
-        <!-- Informações do paciente -->
+        <div class="logo">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo">
+        </div>
+
+        <!-- Título -->
+        <h1>Detalhes do Prontuário</h1>
+
+        <!-- Seção de Dados -->
         <div class="secao-dados">
             <div class="campo campo-dados">
                 <div class="campo-fixo">
-                    <label for="date">Data:</label>
-                    <input type="text" id="date" name="date"
-                        value="{{ \Carbon\Carbon::parse($medicalRecord->data)->format('d/m/Y') }}" disabled>
+                    <label for="data">Data:</label>
+                    <input type="text" id="data" value="{{ $medicalRecord->data }}" readonly>
                 </div>
                 <div class="campo-fixo">
-                    <label for="name">Nome:</label>
-                    <input type="text" id="name" name="name" value="{{ $patient->name }}" disabled>
-                </div>
-                <div class="campo-fixo">
-                    <label for="age">Idade:</label>
-                    <input type="text" id="age" name="age" value="{{ $patient->age }}" disabled>
-                </div>
-                <div class="campo-fixo">
-                    <label for="civil_status">Estado Civil:</label>
-                    <input type="text" id="civil_status" name="civil_status" value="{{ $patient->civil_status }}"
-                        disabled>
-                </div>
-                <div class="campo-fixo">
-                    <label for="id_gov">RG:</label>
-                    <input type="text" id="id_gov" name="id_gov" value="{{ $patient->id_gov }}" disabled>
-                </div>
-                <div class="campo-fixo">
-                    <label for="responsable">Responsável:</label>
-                    <input type="text" id="responsable" name="responsable" value="{{ $patient->responsable }}"
-                        disabled>
+                    <label for="patient_id">Paciente:</label>
+                    <input type="text" id="patient_id" value="{{ $medicalRecord->patient->name }}" readonly>
                 </div>
             </div>
         </div>
 
-        <h2>Prontuário Médico</h2>
-
-
+        <!-- Histórico Médico -->
         <div class="campo-text">
-            <label for="historico_medico">Histórico Médico:</label>
-            <textarea id="historico_medico" name="medical_history" placeholder="Insira o histórico médico do paciente.">{{ old('medical_history') }}</textarea>
+            <label for="medical_history">Histórico Médico:</label>
+            <textarea id="medical_history" readonly>{{ $medicalRecord->medical_history }}</textarea>
         </div>
 
-        <!-- Sessão Demanda -->
+        <!-- Demanda Inicial -->
         <div class="campo-text">
-            <label for="demanda">Demanda inicial:</label>
-            <textarea id="demanda" name="initial_demand"
-                placeholder="Insira aqui informações sobre a demanda inicial do paciente.">{{ old('initial_demand') }}</textarea>
+            <label for="initial_demand">Demanda inicial:</label>
+            <textarea id="initial_demand" readonly>{{ $medicalRecord->initial_demand }}</textarea>
         </div>
 
-        <!-- Seção de Objetivos -->
+        <!-- Objetivos do Tratamento -->
         <div class="campo-text">
-            <label for="objetivos">Objetivos do tratamento:</label>
-            <textarea id="objetivos" name="treatment_goals" placeholder="Insira aqui os objetivos do tratamento.">{{ old('treatment_goals') }}</textarea>
+            <label for="treatment_goals">Objetivos do tratamento:</label>
+            <textarea id="treatment_goals" readonly>{{ $medicalRecord->treatment_goals }}</textarea>
         </div>
 
-        <!-- Seção de Evolução -->
+        <!-- Evolução -->
         <div class="campo-text">
-            <label for="evolucao">Evolução:</label>
-            <textarea id="evolucao" name="evolution" placeholder="Insira aqui as evoluções do tratamento.">{{ old('evolution') }}</textarea>
+            <label for="evolution">Evolução:</label>
+            <textarea id="evolution" readonly>{{ $medicalRecord->evolution }}</textarea>
         </div>
 
-        <!-- Seção de Descrição -->
+        <!-- Informações Gerais -->
         <div class="campo-text">
-            <label for="gerais">Informações gerais:</label>
-            <textarea id="gerais" name="general_info" placeholder="Insira outras informações gerais sobre o paciente.">{{ old('general_info') }}</textarea>
+            <label for="general_info">Informações gerais:</label>
+            <textarea id="general_info" readonly>{{ $medicalRecord->general_info }}</textarea>
         </div>
 
+        <!-- Botão de Voltar -->
+
+
+
+        <button type="button" onclick="printPage()" style="position: fixed; bottom: 90px; right: 30px;">
+            Imprimir
+        </button>
     </div>
 
+    <script>
+        // Função para imprimir a página
+        function printPage() {
+            window.print(); // Abre a caixa de diálogo de impressão do navegador
+        }
+    </script>
 </body>
 
 </html>

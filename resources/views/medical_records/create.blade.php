@@ -7,7 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prontuários</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -333,118 +334,63 @@
 
 <body>
 
-    <!-- Botão de Logout no canto superior direito -->
+
     <button class="logout-btn" onclick="logout()">Logout</button>
     <div class="container">
+        <a class="btn btn-primary" onclick="window.history.back();">Voltar</a>
+
+
         <div class="logo">
             <img src="images/logo.png" alt="Logo">
         </div>
-
-        <form action="{{ route('auth.logout') }}" method="POST" id="logout-form" style="display: none;">
-            @csrf
-            @method('POST')
-        </form>
-
-        <button class="logout-btn" onclick="document.getElementById('logout-form').submit();">Logout</button>
         <form method="POST" action="{{ route('medical_records.store') }}">
-            @csrf <!-- Protege contra CSRF -->
+            @csrf
 
             <div class="secao-dados">
-                <!-- Campos Data, Psicóloga e CRP na mesma linha -->
                 <div class="campo campo-dados">
                     <div class="campo-fixo">
-                        <label for="data" data-label="data">Data:</label>
-                        <input type="date" id="data" name="data" value="{{ old('data') }}"
-                            placeholder="Clique para selecionar a data">
+                        <label for="data">Data:</label>
+                        <input type="date" id="data" name="data" required>
                     </div>
                     <div class="campo-fixo">
-                        <label for="paciente">Paciente:</label>
-                        <input type="text" name="patient_name" id="paciente" list="patients_list" required
-                            placeholder="Digite o nome do paciente">
-                        <datalist id="patients_list">
+                        <label for="patient_id">Paciente:</label>
+                        <select id="patient_id" name="patient_id" required>
+                            <option value="">Selecione um paciente</option>
                             @foreach ($patients as $patient)
-                                <option value="{{ $patient->name }}">
+                                <option value="{{ $patient->id }}">{{ $patient->name }}</option>
                             @endforeach
-                        </datalist>
-                    </div>
-                    <div class="campo-fixo">
-                        <label for="idade">Idade:</label>
-                        <input type="number" id="idade" name="idade" placeholder="Idade" required>
+                        </select>
                     </div>
                 </div>
-
-                <!-- Campos Estado Civil, RG e Responsável -->
-                <div class="campo linha">
-                    <div class="campo-fixo">
-                        <label for="estado-civil">Estado civil:</label>
-                        <input type="text" id="estado-civil" name="estado-civil" placeholder="Estado civil" required>
-                    </div>
-                    <div class="campo-fixo">
-                        <label for="rg">RG:</label>
-                        <input type="text" id="rg" name="rg" placeholder="RG" required maxlength="12"
-                            oninput="formatarRG(this)" pattern="\d{2}\.\d{3}\.\d{3}-\d{1}"
-                            title="O RG deve seguir o formato XX.XXX.XXX-X">
-                    </div>
-                    <div class="campo-fixo">
-                        <label for="responsavel">Responsável</label>
-                        <input type="text" id="nome-pai" name="responsavel" placeholder="Responsável" required>
-                    </div>
-                </div>
-
             </div>
 
-            <!-- Sessão Histórico Médico -->
             <div class="campo-text">
-                <label for="historico_medico">Histórico Médico:</label>
-                <textarea id="historico_medico" name="medical_history" placeholder="Insira o histórico médico do paciente.">{{ old('medical_history') }}</textarea>
+                <label for="medical_history">Histórico Médico:</label>
+                <textarea id="medical_history" name="medical_history"></textarea>
             </div>
 
-            <!-- Sessão Demanda -->
             <div class="campo-text">
-                <label for="demanda">Demanda inicial:</label>
-                <textarea id="demanda" name="initial_demand"
-                    placeholder="Insira aqui informações sobre a demanda inicial do paciente.">{{ old('initial_demand') }}</textarea>
+                <label for="initial_demand">Demanda inicial:</label>
+                <textarea id="initial_demand" name="initial_demand"></textarea>
             </div>
 
-            <!-- Seção de Objetivos -->
             <div class="campo-text">
-                <label for="objetivos">Objetivos do tratamento:</label>
-                <textarea id="objetivos" name="treatment_goals" placeholder="Insira aqui os objetivos do tratamento.">{{ old('treatment_goals') }}</textarea>
+                <label for="treatment_goals">Objetivos do tratamento:</label>
+                <textarea id="treatment_goals" name="treatment_goals"></textarea>
             </div>
 
-            <!-- Seção de Evolução -->
             <div class="campo-text">
-                <label for="evolucao">Evolução:</label>
-                <textarea id="evolucao" name="evolution" placeholder="Insira aqui as evoluções do tratamento.">{{ old('evolution') }}</textarea>
+                <label for="evolution">Evolução:</label>
+                <textarea id="evolution" name="evolution"></textarea>
             </div>
 
-            <!-- Seção de Descrição -->
             <div class="campo-text">
-                <label for="gerais">Informações gerais:</label>
-                <textarea id="gerais" name="general_info" placeholder="Insira outras informações gerais sobre o paciente.">{{ old('general_info') }}</textarea>
+                <label for="general_info">Informações gerais:</label>
+                <textarea id="general_info" name="general_info"></textarea>
             </div>
 
             <button type="submit">Criar Prontuário</button>
         </form>
-    </div>
-
-    <script>
-        // Função para aplicar a máscara no campo RG
-        function formatarRG(input) {
-            let valor = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
-            if (valor.length <= 2) {
-                input.value = valor;
-            } else if (valor.length <= 5) {
-                input.value = valor.replace(/(\d{2})(\d{1,3})/, '$1.$2');
-            } else if (valor.length <= 8) {
-                input.value = valor.replace(/(\d{2})(\d{3})(\d{1,3})/, '$1.$2.$3');
-            } else if (valor.length <= 10) {
-                input.value = valor.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/, '$1.$2.$3-$4');
-            } else {
-                input.value = valor.replace(/(\d{2})(\d{3})(\d{3})(\d{1})(\d{1})/, '$1.$2.$3-$4');
-            }
-        }
-    </script>
 
 </body>
 

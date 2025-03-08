@@ -7,6 +7,7 @@
     <title>Lista de Pacientes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* Estilos base (para todos os dispositivos) */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7fc;
@@ -27,7 +28,8 @@
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
+            width: 90%;
+            max-width: 1200px;
             margin: 30px auto;
             position: relative;
         }
@@ -49,6 +51,7 @@
             height: auto;
         }
 
+        /* Botão Logout (estilo original) */
         .logout-btn {
             margin-bottom: 820px;
             right: 20px;
@@ -65,6 +68,7 @@
             background-color: #c0392b;
         }
 
+        /* Restante do CSS (mantido igual) */
         .campo {
             margin-bottom: 20px;
         }
@@ -340,13 +344,91 @@
         .table-hover tbody tr:hover {
             background-color: #e8effd;
         }
+
+        /* Media Queries para Responsividade */
+
+        /* Dispositivos com largura até 768px (Tablets e Smartphones) */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .logo img {
+                max-width: 200px;
+            }
+
+            .campo .linha,
+            .campo-dados {
+                flex-direction: column;
+            }
+
+            .campo .campo-fixo,
+            .campo-dados .campo-fixo {
+                width: 100%;
+            }
+
+            button {
+                font-size: 1em;
+                padding: 10px 15px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .titulo-entrevista {
+                font-size: 1.6em;
+            }
+
+            .analisetitulo {
+                font-size: 1.5em;
+            }
+
+            .campo-text textarea {
+                height: 120px;
+            }
+        }
+
+        /* Dispositivos com largura até 480px (Smartphones pequenos) */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+            button {
+                font-size: 0.9em;
+                padding: 8px 12px;
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .titulo-entrevista {
+                font-size: 1.4em;
+            }
+
+            .analisetitulo {
+                font-size: 1.3em;
+            }
+
+            .campo-text textarea {
+                height: 100px;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <button class="btn btn-primary" onclick="window.history.back();">Voltar</button>
 
     <div class="container">
+        <a class="btn btn-primary" onclick="window.history.back();">Voltar</a>
+
         <div class="logo">
             <img src="{{ asset('images/logo.png') }}" alt="Logo">
         </div>
