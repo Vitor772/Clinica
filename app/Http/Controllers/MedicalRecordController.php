@@ -12,31 +12,43 @@ class MedicalRecordController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
-    {
-        // Busca todos os prontuários médicos com os dados do paciente
-        $medicalRecords = MedicalRecord::with('patient')->get();
+    public function index(Request $request)
+{
+    $query = MedicalRecord::with('patient');
 
-        // Busca todos os pacientes para exibir na dropdown (se necessário)
-        $patients = Patient::all();
-
-        // Retorna a view com os dados
-        return view('medical_records.index', compact('medicalRecords', 'patients'));
+    if ($request->has('patient_name') && $request->patient_name != '') {
+        $query->whereHas('patient', function ($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->patient_name . '%');
+        });
     }
 
+    if ($request->has('age') && $request->age != '') {
+        $query->whereHas('patient', function ($q) use ($request) {
+            $q->where('age', $request->age);
+        });
+    }
+
+    if ($request->has('data') && $request->data != '') {
+        $query->where('data', $request->data);
+    }
+
+    $medicalRecords = $query->get();
+
+    $patients = Patient::all();
+
+    return view('medical_records.index', compact('medicalRecords', 'patients'))
+        ->with('filters', $request->all());
+}
     /**
-     * Exibe os detalhes de um prontuário médico específico.
      *
      * @param int $id
      * @return \Illuminate\View\View
      */
     public function show($id)
     {
-        // Recupera o prontuário pelo ID
         $medicalRecord = MedicalRecord::findOrFail($id);
 
-        // Recupera o paciente relacionado ao prontuário
-        $patient = $medicalRecord->patient;  // Supondo que você tenha um relacionamento no modelo MedicalRecord
+        $patient = $medicalRecord->patient;
 
         // Retorna a view com os dados
         return view('medical_records.show', compact('medicalRecord', 'patient'));

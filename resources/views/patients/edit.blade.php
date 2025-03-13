@@ -55,8 +55,6 @@
 
         /* Estilo para o botão de logout */
         .logout-btn {
-            margin-bottom: 820px;
-            right: 20px;
             background-color: #e74c3c;
             color: white;
             padding: 10px 15px;
@@ -202,12 +200,11 @@
             cursor: pointer;
             transition: background-color 0.3s;
             width: auto;
-            position: fixed;
             bottom: 30px;
             right: 30px;
-            display: flex;
             align-items: center;
             justify-content: center;
+            float: right;
         }
 
         button:hover {
@@ -398,6 +395,20 @@
             .campo-text textarea {
                 height: 100px;
             }
+        }
+
+        .btn-primary {
+            background-color: #6c83c7;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #56688b;
         }
     </style>
 </head>

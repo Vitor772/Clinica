@@ -53,7 +53,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('consults/{consultation}/edit', [ConsultationController::class, 'edit'])->name('consults.edit');
     Route::put('consults/{consultation}', [ConsultationController::class, 'update'])->name('consults.update');
     Route::delete('consults/{consultation}', [ConsultationController::class, 'destroy'])->name('consults.destroy');
-
+    // routes/web.php
+    Route::get('/consults/create/{patient}', [ConsultationController::class, 'create'])->name('consults.create');
     // Página inicial ou outras páginas protegidas
     Route::get('/', function () {
         return view('welcome');

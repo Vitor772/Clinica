@@ -53,15 +53,17 @@
 
         /* Botão Logout (estilo original) */
         .logout-btn {
-            margin-bottom: 820px;
-            right: 20px;
             background-color: #e74c3c;
+
+            top background-color: #e74c3c;
             color: white;
             padding: 10px 15px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-size: 1em;
+            float: right;
+
         }
 
         .logout-btn:hover {
@@ -201,7 +203,6 @@
             cursor: pointer;
             transition: background-color 0.3s;
             width: auto;
-            position: fixed;
             bottom: 30px;
             right: 30px;
             display: flex;
@@ -421,6 +422,17 @@
                 height: 100px;
             }
         }
+
+
+        .btn-primary {
+            background-color: #6c83c7;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
     </style>
 </head>
 
@@ -428,25 +440,25 @@
 
     <div class="container">
         <a class="btn btn-primary" onclick="window.history.back();">Voltar</a>
-
-        <div class="logo">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo">
-        </div>
-        <!-- Botão de Logout no canto superior direito -->
         <form action="{{ route('auth.logout') }}" method="POST" id="logout-form" style="display: none;">
             @csrf
             @method('POST')
         </form>
-
         <button class="logout-btn" onclick="document.getElementById('logout-form').submit();">Logout</button>
+
+
+        <div class="logo">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo">
+        </div>
+
+
         <form action="{{ route('medical_records.index') }}" method="GET">
-            @csrf <!-- Token CSRF para segurança -->
+            @csrf
             <div class="secao-dados">
                 <div class="campo campo-dados">
                     <div class="campo-fixo">
                         <label for="data">Data:</label>
-                        <input type="date" id="data" name="data" value=""
-                            placeholder="Clique para selecionar a data">
+                        <input type="date" id="data" name="data" value="{{ request()->input('data') }}">
                     </div>
                     <div class="campo-fixo">
                         <label for="patient_name">Paciente:</label>
@@ -458,39 +470,16 @@
                         <input type="number" id="age" name="age" placeholder="Idade"
                             value="{{ request()->input('age') }}">
                     </div>
-                </div>
-
-                <div class="campo linha">
-                    <div class="campo-fixo">
-                        <label for="marital_status">Estado Civil:</label>
-                        <input type="text" id="marital_status" name="marital_status" placeholder="Estado civil"
-                            value="{{ request()->input('marital_status') }}">
+                    <div class="text-center">
+                        <a type="submit" style="background-color:#6c83c7;" class="btn btn-primary">Aplicar
+                            Filtros</a>
                     </div>
-                    <div class="campo-fixo">
-                        <label for="rg">RG:</label>
-                        <input type="text" id="rg" name="rg" placeholder="RG"
-                            value="{{ request()->input('rg') }}" maxlength="12" oninput="formatarRG(this)"
-                            pattern="\d{2}\.\d{3}\.\d{3}-\d{1}" title="O RG deve seguir o formato XX.XXX.XXX-X">
-                    </div>
-                    <div class="campo-fixo">
-                        <label for="responsible">Responsável:</label>
-                        <input type="text" id="responsible" name="responsible" placeholder="Responsável"
-                            value="{{ request()->input('responsible') }}">
-                    </div>
-                </div>
-
-                <div class="text-center">
-                    <button type="submit" style="background-color:#6c83c7;" class="btn btn-primary">Aplicar
-                        Filtros</button>
                 </div>
             </div>
         </form>
 
-
-        <!-- Título -->
         <h1 class="text-center mb-4">Lista de Prontuários</h1>
 
-        <!-- Botão para adicionar novo prontuário -->
         <div class="text-end mb-4">
             <a style="background-color:#6c83c7;" href="{{ route('medical_records.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Adicionar Novo Prontuário
@@ -503,8 +492,6 @@
                     <tr>
                         <th>Paciente</th>
                         <th>Idade</th>
-                        <th>Estado Civil</th>
-                        <th>RG</th>
                         <th>Responsável</th>
                         <th>Ações</th>
                     </tr>
@@ -514,8 +501,6 @@
                         <tr>
                             <td>{{ $record->patient->name }}</td>
                             <td>{{ $record->patient->age }}</td>
-                            <td>{{ $record->patient->civil_status }}</td>
-                            <td>{{ $record->patient->id_gov }}</td>
                             <td>{{ $record->patient->responsable }}</td>
                             <td>
                                 <!-- Link para visualizar detalhes -->

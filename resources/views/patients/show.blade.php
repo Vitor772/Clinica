@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anamnese de psicologia</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <title>Anamnese de Psicologia</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,10 +17,13 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
+            /* Mudado para flex-start para permitir que o conteúdo cresça */
             flex-direction: column;
             box-sizing: border-box;
             height: 100%;
+            /* Garantir que o body ocupe toda a altura */
             overflow: auto;
+            /* Permite que o conteúdo com overflow mostre uma barra de rolagem */
         }
 
         .container {
@@ -29,8 +32,9 @@
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 900px;
+            max-width: 800px;
             margin: 30px auto;
+            /* Centraliza o conteúdo horizontalmente */
             position: relative;
         }
 
@@ -49,12 +53,16 @@
 
         .logo img {
             max-width: 250px;
+            /* Ajusta o tamanho máximo da logo */
             height: auto;
+            /* Mantém a proporção da imagem */
         }
 
         /* Estilo para o botão de logout */
         .logout-btn {
-            margin-bottom: 820px;
+            position: absolute;
+            top: 20px;
+            margin-bottom: 905px;
             right: 20px;
             background-color: #e74c3c;
             color: white;
@@ -69,6 +77,7 @@
             background-color: #c0392b;
         }
 
+        /* Estilo para o resto da página */
         .campo {
             margin-bottom: 20px;
         }
@@ -255,9 +264,17 @@
             margin-top: 40px;
         }
 
+        .texto-justificado {
+            text-align: justify;
+            font-size: 1em;
+            color: #333;
+            margin-top: 20px;
+        }
+
         /* Adicionando estilo para os campos Data, Psicóloga e CRP na mesma linha */
         .campo-dados {
             display: flex;
+            justify-content: space-between;
             gap: 15px;
             flex-wrap: wrap;
         }
@@ -293,6 +310,11 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        /* Estilo para o campo de descrição */
+        .campo-text {
+            margin-top: 30px;
+        }
+
         .campo-text textarea {
             width: 100%;
             padding: 12px;
@@ -314,183 +336,74 @@
             display: block;
         }
 
-        .secao-gravidez {
-            background-color: #f4f7fc;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        .btn-primary {
+            background-color: #6c83c7;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        /* Media Queries para Responsividade */
-
-        /* Dispositivos com largura até 768px (Tablets e Smartphones) */
-        @media (max-width: 768px) {
-            .container {
-                width: 95%;
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .logo img {
-                max-width: 200px;
-            }
-
-            .campo .linha,
-            .campo-dados {
-                flex-direction: column;
-            }
-
-            .campo .campo-fixo,
-            .campo-dados .campo-fixo {
-                width: 100%;
-            }
-
-            button {
-                font-size: 1em;
-                padding: 10px 15px;
-                bottom: 20px;
-                right: 20px;
-            }
-
-            .titulo-entrevista {
-                font-size: 1.6em;
-            }
-
-            .analisetitulo {
-                font-size: 1.5em;
-            }
-
-            .campo-text textarea {
-                height: 120px;
-            }
-        }
-
-        /* Dispositivos com largura até 480px (Smartphones pequenos) */
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.5em;
-            }
-
-            .logo img {
-                max-width: 150px;
-            }
-
-            button {
-                font-size: 0.9em;
-                padding: 8px 12px;
-                bottom: 15px;
-                right: 15px;
-            }
-
-            .titulo-entrevista {
-                font-size: 1.4em;
-            }
-
-            .analisetitulo {
-                font-size: 1.3em;
-            }
-
-            .campo-text textarea {
-                height: 100px;
-            }
+        .btn-primary:hover {
+            background-color: #56688b;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-
         <a class="btn btn-primary" onclick="window.history.back();">Voltar</a>
 
-        <form action="{{ route('auth.logout') }}" method="POST" id="logout-form" style="display: none;">
-            @csrf
-            @method('POST')
-        </form>
+        <h1>Anamnese de Psicologia</h1>
 
-        <button class="logout-btn" onclick="document.getElementById('logout-form').submit();">Logout</button>
-
-        <!-- Alterar a action para a rota de atualização e usar o método PUT ou PATCH -->
-        <form action="{{ route('patients.update', $patient->id) }}" method="POST">
-            @csrf
-            @method('PUT') <!-- Método HTTP PUT para edição -->
-
-            <div class="logo">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo">
-            </div>
-
-            <!-- Seção de Dados com fundo claro -->
+        <!-- Formulário de Anamnese -->
+        <form id="anamnese-form">
+            <!-- Seção de Dados -->
             <div class="secao-dados">
-                <!-- Campos Data, Psicóloga e CRP na mesma linha -->
-                <div class="campo campo-dados">
-                    <div class="campo-fixo">
-                        <label for="birth_date">Data de Nascimento:</label>
-                        <!-- Preenchendo o campo com a data existente -->
-                        <input type="date" id="birth_date" name="birth_date"
-                            value="{{ old('birth_date', $patient->birth_date) }}"
-                            placeholder="Clique para selecionar a data de nascimento">
-                    </div>
-                    <div class="campo-fixo">
-                        <label for="name">Paciente:</label>
-                        <!-- Preenchendo com o nome existente -->
-                        <input type="text" id="name" name="name" value="{{ old('name', $patient->name) }}"
-                            placeholder="Paciente" required>
-                    </div>
-                    <div class="campo-fixo">
-                        <label for="age">Idade:</label>
-                        <!-- Preenchendo com a idade existente -->
-                        <input type="number" id="age" name="age" value="{{ old('age', $patient->age) }}"
-                            placeholder="Idade" required>
-                    </div>
+                <div class="campo">
+                    <label for="name">Nome do Paciente:</label>
+                    <input type="text" id="name" name="name" value="João da Silva" required>
                 </div>
-
-                <!-- Campos de estado civil, RG, responsável, etc. -->
-                <div class="campo linha">
-                    <div class="campo-fixo">
-                        <label for="civil_status">Estado civil:</label>
-                        <input type="text" id="civil_status" name="civil_status"
-                            value="{{ old('civil_status', $patient->civil_status) }}" placeholder="Estado civil"
-                            required>
-                    </div>
-                    <div class="campo-fixo">
-                        <label for="id_gov">RG:</label>
-                        <input type="text" id="id_gov" name="id_gov"
-                            value="{{ old('id_gov', $patient->id_gov) }}" placeholder="RG" required maxlength="12"
-                            oninput="formatarRG(this)" pattern="\d{2}\.\d{3}\.\d{3}-\d{1}"
-                            title="O RG deve seguir o formato XX.XXX.XXX-X">
-                    </div>
-                    <div class="campo-fixo">
-                        <label for="responsable">Responsável</label>
-                        <input type="text" id="responsable" name="responsable"
-                            value="{{ old('responsable', $patient->responsable) }}" placeholder="Responsável" required>
-                    </div>
+                <div class="campo">
+                    <label for="birth_date">Data de Nascimento:</label>
+                    <input type="date" id="birth_date" name="birth_date" value="1990-01-01" required>
+                </div>
+                <div class="campo">
+                    <label for="age">Idade:</label>
+                    <input type="number" id="age" name="age" value="33" required>
+                </div>
+                <div class="campo">
+                    <label for="civil_status">Estado Civil:</label>
+                    <input type="text" id="civil_status" name="civil_status" value="Solteiro" required>
+                </div>
+                <div class="campo">
+                    <label for="id_gov">RG:</label>
+                    <input type="text" id="id_gov" name="id_gov" value="12.345.678-9" required>
+                </div>
+                <div class="campo">
+                    <label for="responsable">Responsável:</label>
+                    <input type="text" id="responsable" name="responsable" value="Maria Silva" required>
                 </div>
             </div>
 
-            <!-- Perguntas da anamnese com as informações já preenchidas -->
+            <!-- Perguntas da Anamnese -->
             <div class="titulo-entrevista">Anamnese (Introdução)</div>
-            <div class="espaco-entre-campos-e-titulo"></div>
 
             <div class="campo-text">
                 <label for="family_reason">Qual motivo principal para a família buscar o atendimento?</label>
-                <textarea id="family_reason" name="family_reason" placeholder="Insira aqui informações.">{{ old('family_reason', $patient->family_reason) }}</textarea>
+                <textarea id="family_reason" name="family_reason">Problemas de comportamento.</textarea>
             </div>
 
             <div class="campo-text">
                 <label for="demand_start_date">Quando se iniciou essa demanda?</label>
-                <textarea id="demand_start_date" name="demand_start_date" placeholder="Insira aqui informações.">{{ old('demand_start_date', $patient->demand_start_date) }}</textarea>
+                <textarea id="demand_start_date" name="demand_start_date">Há 6 meses.</textarea>
             </div>
-
-            <!-- Outras perguntas da anamnese... -->
 
             <!-- Perguntas da Anamnese de Gravidez -->
             <div class="titulo-entrevista">Anamnese (Gravidez)</div>
-            <div class="espaco-entre-campos-e-titulo"></div>
 
-            <!-- Exemplo de preenchimento de um campo com resposta já existente -->
             <fieldset>
                 <legend>1. Foi planejada?</legend>
                 <div class="pergunta">
@@ -513,14 +426,12 @@
                 <div class="pergunta">
                     <div class="opcoes">
                         <div class="opcao">
-                            <input type="radio" id="pregnancy_accepted_sim" name="pregnancy_accepted"
-                                value="1"
+                            <input type="radio" id="pregnancy_accepted_sim" name="pregnancy_accepted" value="1"
                                 {{ old('pregnancy_accepted', $patient->pregnancy_accepted) == '1' ? 'checked' : '' }}>
                             <label for="pregnancy_accepted_sim">Sim</label>
                         </div>
                         <div class="opcao">
-                            <input type="radio" id="pregnancy_accepted_nao" name="pregnancy_accepted"
-                                value="0"
+                            <input type="radio" id="pregnancy_accepted_nao" name="pregnancy_accepted" value="0"
                                 {{ old('pregnancy_accepted', $patient->pregnancy_accepted) == '0' ? 'checked' : '' }}>
                             <label for="pregnancy_accepted_nao">Não</label>
                         </div>
@@ -674,24 +585,144 @@
                     </div>
                 </div>
             </fieldset>
+        </form>
 
-
-            <!-- Botão de envio -->
-
-
-            <!-- Botão para Imprimir -->
-            <button type="button" onclick="printPage()" style="position: fixed; bottom: 90px; right: 30px;">
-                Imprimir
-            </button>
+        <!-- Botão para Gerar PDF -->
+        <button type="button" onclick="generatePDF()">Gerar PDF</button>
     </div>
-
     <script>
-        // Função para imprimir a página
-        function printPage() {
-            window.print(); // Abre a caixa de diálogo de impressão do navegador
+        function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Configurações
+    const margin = 15; // Margem aumentada para melhorar a legibilidade
+    let y = 20; // Posição inicial no eixo Y
+    const lineHeight = 8; // Altura da linha
+    const maxHeight = 280; // Altura máxima antes de adicionar uma nova página
+
+    // Função para adicionar uma linha de texto
+    const addLine = (text, fontSize = 10, isBold = false) => {
+        if (y > maxHeight) {
+            doc.addPage(); // Adiciona uma nova página
+            y = 20; // Reinicia a posição Y
         }
+        doc.setFontSize(fontSize);
+        doc.setFont(isBold ? 'helvetica' : 'helvetica', isBold ? 'bold' : 'normal');
+        doc.text(text, margin, y);
+        y += lineHeight;
+    };
+
+    // Função para adicionar um separador
+    const addSeparator = () => {
+        if (y > maxHeight) {
+            doc.addPage();
+            y = 20;
+        }
+        doc.setLineWidth(0.5);
+        doc.line(margin, y, doc.internal.pageSize.width - margin, y);
+        y += lineHeight;
+    };
+
+    // Captura os valores dos campos
+    const name = document.getElementById('name')?.value || 'Não informado';
+    const birthDate = document.getElementById('birth_date')?.value || 'Não informado';
+    const age = document.getElementById('age')?.value || 'Não informado';
+    const civilStatus = document.getElementById('civil_status')?.value || 'Não informado';
+    const idGov = document.getElementById('id_gov')?.value || 'Não informado';
+    const responsable = document.getElementById('responsable')?.value || 'Não informado';
+    const familyReason = document.getElementById('family_reason')?.value || 'Não informado';
+    const demandStartDate = document.getElementById('demand_start_date')?.value || 'Não informado';
+    const pregnancyPlanned = document.querySelector('input[name="pregnancy_planned"]:checked')?.value || 'Não informado';
+    const pregnancyAccepted = document.querySelector('input[name="pregnancy_accepted"]:checked')?.value || 'Não informado';
+    const bloodPressureIssues = document.querySelector('input[name="blood_pressure_issues"]:checked')?.value || 'Não informado';
+    const infectiousDisease = document.querySelector('input[name="infectious_disease"]:checked')?.value || 'Não informado';
+    const pregnancyComplications = document.querySelector('input[name="pregnancy_complications"]:checked')?.value || 'Não informado';
+    const pregnancyComplicationsDetails = document.getElementById('pregnancy_complications_details')?.value || 'Não informado';
+    const medicationUse = document.querySelector('input[name="medication_use"]:checked')?.value || 'Não informado';
+    const medicationDetails = document.getElementById('medication_details')?.value || 'Não informado';
+    const prematurity = document.querySelector('input[name="prematurity"]:checked')?.value || 'Não informado';
+    const prematurityDetails = document.getElementById('prematurity_details')?.value || 'Não informado';
+    const birthType = document.querySelector('input[name="birth_type"]:checked')?.value || 'Não informado';
+    const birthComplications = document.querySelector('input[name="birth_complications"]:checked')?.value || 'Não informado';
+
+    // Adiciona o título (fonte maior)
+    addLine("Anamnese de Psicologia", 16, true);
+    y += lineHeight; // Espaço extra após o título
+
+    // Adiciona informações do paciente
+    addLine(`Nome do Paciente: ${name}`);
+    addLine(`Data de Nascimento: ${birthDate}`);
+    addLine(`Idade: ${age}`);
+    addLine(`Estado Civil: ${civilStatus}`);
+    addLine(`RG: ${idGov}`);
+    addLine(`Responsável: ${responsable}`);
+    y += lineHeight; // Espaço extra
+
+    // Perguntas da Anamnese
+    addLine("Qual motivo principal para a família buscar o atendimento?", 12, true);
+    addLine(familyReason);
+    y += lineHeight; // Espaço extra
+
+    addLine("Quando se iniciou essa demanda?", 12, true);
+    addLine(demandStartDate);
+    y += lineHeight; // Espaço extra
+
+    // Perguntas da Anamnese de Gravidez
+    addLine("1. Foi planejada?", 12, true);
+    addLine(`( ${pregnancyPlanned === '1' ? 'X' : ' '} ) Sim`);
+    addLine(`( ${pregnancyPlanned === '0' ? 'X' : ' '} ) Não`);
+    y += lineHeight; // Espaço extra
+
+    addLine("2. Sua gravidez foi aceita?", 12, true);
+    addLine(`( ${pregnancyAccepted === '1' ? 'X' : ' '} ) Sim`);
+    addLine(`( ${pregnancyAccepted === '0' ? 'X' : ' '} ) Não`);
+    y += lineHeight; // Espaço extra
+
+    addLine("3. Alteração da pressão arterial (eclampsia e pré-eclampsia)?", 12, true);
+    addLine(`( ${bloodPressureIssues === '1' ? 'X' : ' '} ) Sim`);
+    addLine(`( ${bloodPressureIssues === '0' ? 'X' : ' '} ) Não`);
+    y += lineHeight; // Espaço extra
+
+    addLine("4. Quadro de doença infecciosa durante a gravidez (TORSCH)?", 12, true);
+    addLine(`( ${infectiousDisease === '1' ? 'X' : ' '} ) Sim`);
+    addLine(`( ${infectiousDisease === '0' ? 'X' : ' '} ) Não`);
+    y += lineHeight; // Espaço extra
+
+    addLine("5. Complicações (sangramentos, ameaças de aborto). Especifique", 12, true);
+    addLine(`( ${pregnancyComplications === '1' ? 'X' : ' '} ) Sim`);
+    addLine(`( ${pregnancyComplications === '0' ? 'X' : ' '} ) Não`);
+    addSeparator(); // Linha separadora
+    addLine(`Detalhes: ${pregnancyComplicationsDetails}`);
+    y += lineHeight; // Espaço extra
+
+    addLine("6. Uso de medicação? Especifique.", 12, true);
+    addLine(`( ${medicationUse === '1' ? 'X' : ' '} ) Sim`);
+    addLine(`( ${medicationUse === '0' ? 'X' : ' '} ) Não`);
+    addSeparator(); // Linha separadora
+    addLine(`Detalhes: ${medicationDetails}`);
+    y += lineHeight; // Espaço extra
+
+    addLine("7. Prematuridade? Especifique.", 12, true);
+    addLine(`( ${prematurity === '1' ? 'X' : ' '} ) Sim`);
+    addLine(`( ${prematurity === '0' ? 'X' : ' '} ) Não`);
+    addSeparator(); // Linha separadora
+    addLine(`Detalhes: ${prematurityDetails}`);
+    y += lineHeight; // Espaço extra
+
+    addLine("8. Tipo de parto?", 12, true);
+    addLine(`( ${birthType === 'Normal' ? 'X' : ' '} ) Normal`);
+    addLine(`( ${birthType === 'Cesáreo' ? 'X' : ' '} ) Cesáreo`);
+    y += lineHeight; // Espaço extra
+
+    addLine("9. Complicações no parto?", 12, true);
+    addLine(`( ${birthComplications === '1' ? 'X' : ' '} ) Sim`);
+    addLine(`( ${birthComplications === '0' ? 'X' : ' '} ) Não`);
+
+    // Salva o PDF
+    doc.save("anamnese.pdf");
+}
     </script>
 </body>
-
 
 </html>

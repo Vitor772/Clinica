@@ -321,9 +321,20 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* Media Queries para Responsividade */
+        .btn-primary {
+            background-color: #6c83c7;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-        /* Dispositivos com largura até 768px (Tablets e Smartphones) */
+        .btn-primary:hover {
+            background-color: #56688b;
+        }
+
         @media (max-width: 768px) {
             .container {
                 width: 95%;

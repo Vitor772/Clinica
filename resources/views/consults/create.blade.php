@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anamnese de psicologia</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <title>Calendário de Consultas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -15,13 +14,6 @@
             color: #333;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            flex-direction: column;
-            box-sizing: border-box;
-            height: 100%;
-            overflow: auto;
         }
 
         .container {
@@ -30,9 +22,8 @@
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 800px;
+            max-width: 1200px;
             margin: 30px auto;
-            position: relative;
         }
 
         h1 {
@@ -42,419 +33,243 @@
             margin-bottom: 30px;
         }
 
-        /* Logo */
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
+        #calendar {
+            margin-top: 20px;
         }
 
-        .logo img {
-            max-width: 250px;
-            height: auto;
-        }
-
-        /* Estilo para o botão de logout */
-        .logout-btn {
-            margin-bottom: 820px;
-            right: 20px;
-            background-color: #e74c3c;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        .logout-btn:hover {
-            background-color: #c0392b;
-        }
-
-        .campo {
+        .form-group {
             margin-bottom: 20px;
         }
 
-        .campo label {
-            font-size: 1.1em;
+        .form-group label {
             font-weight: bold;
             color: #4e5b6e;
         }
 
-        .campo input {
+        .form-group input,
+        .form-group select {
             width: 100%;
-            padding: 12px;
-            font-size: 1em;
+            padding: 10px;
             border-radius: 8px;
             border: 1px solid #ddd;
             background-color: #f9f9f9;
-            color: #333;
-            box-sizing: border-box;
-        }
-
-        .campo input[type="date"] {
-            width: 100%;
-            padding: 12px;
             font-size: 1em;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            color: #333;
-            box-sizing: border-box;
         }
 
-        .campo input[type="number"],
-        .campo input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            font-size: 1em;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-
-        .campo input[type="date"]:focus,
-        .campo input[type="text"]:focus,
-        .campo input[type="number"]:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #6c83c7;
             background-color: #e8effd;
         }
 
-        .campo .linha {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .campo .campo-fixo {
-            width: 48%;
-        }
-
-        .pergunta {
-            margin-bottom: 20px;
-        }
-
-        .opcoes {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .opcao {
-            display: flex;
-            align-items: center;
-            font-size: 1em;
-        }
-
-        .opcao input[type="radio"] {
-            margin-right: 10px;
-        }
-
-        fieldset {
-            border: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-
-        fieldset legend {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #4e5b6e;
-        }
-
-        .total {
-            margin-top: 30px;
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #4e5b6e;
-        }
-
-        .total table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-
-        .total th,
-        .total td {
-            padding: 8px 12px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        .total th {
-            background-color: #f3f4f8;
-            font-weight: bold;
-        }
-
-        .total td {
-            background-color: #f9f9f9;
-        }
-
-        button {
+        .btn-primary {
             background-color: #6c83c7;
-            color: #fff;
-            font-size: 1.1em;
-            padding: 12px 20px;
             border: none;
+            padding: 10px 20px;
+            font-size: 1.1em;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s;
-            width: auto;
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        button:hover {
+        .btn-primary:hover {
             background-color: #56688b;
         }
 
-        button i {
-            font-size: 1.5em;
-        }
-
-        .linha {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .campo-fixo {
-            width: 48%;
-        }
-
-        .campo .data {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .data input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            font-size: 1em;
+        .error-message {
+            color: red;
+            font-size: 0.9em;
             margin-top: 5px;
-        }
-
-        .campo label[data-label="data"] {
-            font-weight: bold;
-        }
-
-        .analisetitulo {
-            font-size: 1.8em;
-            color: #4e5b6e;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        /* Adicionando estilo para os campos Data, Psicóloga e CRP na mesma linha */
-        .campo-dados {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .campo-dados .campo-fixo {
-            width: 32%;
-        }
-
-        /* Garantindo que o campo Data tenha o layout correto */
-        .campo-dados .campo-fixo[data-label="data"] {
-            width: 100%;
-        }
-
-        /* Espaço entre os campos e o título "Entrevista" */
-        .espaco-entre-campos-e-titulo {
-            margin-bottom: 30px;
-        }
-
-        .titulo-entrevista {
-            font-size: 2em;
-            color: #4e5b6e;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        /* Seção de Dados - Fundo claro para os campos */
-        .secao-dados {
-            background-color: #f4f7fc;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .campo-text textarea {
-            width: 100%;
-            padding: 12px;
-            font-size: 1em;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            color: #333;
-            height: 150px;
-            box-sizing: border-box;
-            resize: vertical;
-        }
-
-        .campo-text label {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #4e5b6e;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .secao-gravidez {
-            background-color: #f4f7fc;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Media Queries para Responsividade */
-
-        /* Dispositivos com largura até 768px (Tablets e Smartphones) */
-        @media (max-width: 768px) {
-            .container {
-                width: 95%;
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .logo img {
-                max-width: 200px;
-            }
-
-            .campo .linha,
-            .campo-dados {
-                flex-direction: column;
-            }
-
-            .campo .campo-fixo,
-            .campo-dados .campo-fixo {
-                width: 100%;
-            }
-
-            button {
-                font-size: 1em;
-                padding: 10px 15px;
-                bottom: 20px;
-                right: 20px;
-            }
-
-            .titulo-entrevista {
-                font-size: 1.6em;
-            }
-
-            .analisetitulo {
-                font-size: 1.5em;
-            }
-
-            .campo-text textarea {
-                height: 120px;
-            }
-        }
-
-        /* Dispositivos com largura até 480px (Smartphones pequenos) */
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.5em;
-            }
-
-            .logo img {
-                max-width: 150px;
-            }
-
-            button {
-                font-size: 0.9em;
-                padding: 8px 12px;
-                bottom: 15px;
-                right: 15px;
-            }
-
-            .titulo-entrevista {
-                font-size: 1.4em;
-            }
-
-            .analisetitulo {
-                font-size: 1.3em;
-            }
-
-            .campo-text textarea {
-                height: 100px;
-            }
         }
     </style>
 </head>
 
 <body>
-
-
-
     <div class="container">
         <a class="btn btn-primary" onclick="window.history.back();">Voltar</a>
+        <h1>Calendário de Consultas</h1>
 
-        <div class="logo">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo">
-        </div>
-        <!-- Botão de Logout no canto superior direito -->
-        <form action="{{ route('auth.logout') }}" method="POST" id="logout-form" style="display: none;">
+        <form id="consultation-form" onsubmit="event.preventDefault(); saveConsultation();">
             @csrf
-            @method('POST')
+            <div class="form-group">
+                <label for="patient_id">Paciente</label>
+                <select name="patient_id" id="patient_id" class="form-control" required>
+                    <option value="">Selecione um paciente</option>
+                    @foreach ($patients as $patient)
+                        <option value="{{ $patient->id }}">{{ $patient->name }}</option>
+                    @endforeach
+                </select>
+                <div id="patient_id_error" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="consultation_date">Data da Consulta</label>
+                <input type="datetime-local" name="consultation_date" id="consultation_date" class="form-control"
+                    required>
+                <div id="consultation_date_error" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="description">Descrição</label>
+                <input type="text" name="description" id="description" class="form-control" required>
+                <div id="description_error" class="error-message"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar Consulta</button>
         </form>
 
-        <button class="logout-btn" onclick="document.getElementById('logout-form').submit();">Logout</button>
+        <div id="calendar"></div>
+    </div>
 
-        <!-- Título -->
-        <h1 class="text-center mb-4">Nova Consulta</h1>
-
-        <div class="secao-dados">
-            <form action="{{ route('consults.store') }}" method="POST">
-                @csrf
-                <div class="campo campo-dados">
-                    <div class="campo-fixo">
-                        <label for="patient_id">Paciente:</label>
-                        <select id="patient_id" name="patient_id" class="form-control" required>
-                            <option value="">Selecione um paciente</option>
-                            @foreach ($patients as $patient)
-                                <option value="{{ $patient->id }}">{{ $patient->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="campo-fixo">
-                        <label for="consultation_date">Data da Consulta:</label>
-                        <input type="date" id="consultation_date" name="consultation_date" class="form-control"
-                            required>
-                    </div>
+    <div class="modal fade" id="editConsultationModal" tabindex="-1" aria-labelledby="editConsultationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editConsultationModalLabel">Editar Consulta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="campo linha">
-                    <div class="campo-fixo">
-                        <label for="description">Descrição:</label>
-                        <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
-                    </div>
+                <div class="modal-body">
+                    <form id="edit-consultation-form">
+                        <div class="form-group">
+                            <label for="edit-description">Descrição</label>
+                            <input type="text" class="form-control" id="edit-description">
+                        </div>
+                    </form>
                 </div>
-                <div class="text-center">
-                    <button type="submit" style="background-color:#6c83c7;" class="btn btn-primary">Salvar
-                        Consulta</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" id="save-edit">Salvar</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales/pt-br.min.js"></script>
+    <script>
+        var calendar;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'pt-br',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                    @foreach ($consultations as $consultation)
+                        {
+                            id: "{{ $consultation->id }}",
+                            title: "{{ $consultation->patient->name }}: {{ $consultation->description }}",
+                            start: "{{ $consultation->consultation_date }}",
+                            end: "{{ $consultation->consultation_date }}",
+                            patient_id: "{{ $consultation->patient_id }}"
+                        },
+                    @endforeach
+                ],
+                eventDisplay: 'block',
+                eventContent: function(info) {
+                    return {
+                        html: `<strong>${info.event.title}</strong>`
+                    };
+                },
+                dateClick: function(info) {
+                    var title = prompt('Digite o nome da consulta:');
+                    if (title) {
+                        var patientId = document.getElementById('patient_id').value;
+
+                        $.ajax({
+                            url: "{{ route('consults.store') }}",
+                            method: 'POST',
+                            data: {
+                                patient_id: patientId,
+                                consultation_date: info.dateStr,
+                                description: title,
+                                _token: "{{ csrf_token() }}"
+                            },
+                            success: function(response) {
+                                alert(response.message);
+                                location.reload(); // Recarrega a página após salvar
+                            },
+                            error: function(xhr) {
+                                var errors = xhr.responseJSON.errors;
+                                for (var field in errors) {
+                                    alert(errors[field][0]);
+                                }
+                            }
+                        });
+                    }
+                },
+                eventClick: function(info) {
+                    var modal = new bootstrap.Modal(document.getElementById('editConsultationModal'));
+                    var descriptionInput = document.getElementById('edit-description');
+                    var saveButton = document.getElementById('save-edit');
+
+                    descriptionInput.value = info.event.title.split(': ')[1];
+
+                    modal.show();
+
+                    saveButton.onclick = function() {
+                        var newDescription = descriptionInput.value;
+                        if (newDescription) {
+                            $.ajax({
+                                url: "{{ route('consults.update', '') }}/" + info.event.id,
+                                method: 'PUT',
+                                data: {
+                                    description: newDescription,
+                                    _token: "{{ csrf_token() }}"
+                                },
+                                success: function(response) {
+                                    alert(response.message);
+                                    location.reload(); // Recarrega a página após editar
+                                },
+                                error: function(xhr) {
+                                    var errors = xhr.responseJSON.errors;
+                                    for (var field in errors) {
+                                        alert(errors[field][0]);
+                                    }
+                                }
+                            });
+                        }
+                    };
+                }
+            });
+
+            calendar.render();
+        });
+
+        function saveConsultation() {
+            var patientId = document.getElementById('patient_id').value;
+            var consultationDate = document.getElementById('consultation_date').value;
+            var description = document.getElementById('description').value;
+
+            $.ajax({
+                url: "{{ route('consults.store') }}",
+                method: 'POST',
+                data: {
+                    patient_id: patientId,
+                    consultation_date: consultationDate,
+                    description: description,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    alert(response.message);
+                    location.reload(); // Recarrega a página após salvar
+                },
+                error: function(xhr) {
+                    var errors = xhr.responseJSON.errors;
+                    for (var field in errors) {
+                        document.getElementById(field + '_error').textContent = errors[field][0];
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

@@ -320,12 +320,21 @@
             margin-bottom: 30px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        .btn-primary {
+            background-color: #6c83c7;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
     </style>
 </head>
 
 <body>
-    <!-- Botão de Logout no canto superior direito -->
-    <button class="logout-btn" onclick="logout()">Logout</button>
+
     <div class="container">
         <a class="btn btn-primary" onclick="window.history.back();">Voltar</a>
 
@@ -380,16 +389,99 @@
             <textarea id="general_info" readonly>{{ $medicalRecord->general_info }}</textarea>
         </div>
 
-        <!-- Botão de Voltar -->
-
-
-
-        <button type="button" onclick="printPage()" style="position: fixed; bottom: 90px; right: 30px;">
-            Imprimir
+        <button type="button" onclick="generatePDF()" class="btn-pdf">
+            Gerar PDF
         </button>
     </div>
 
     <script>
+        // Função para gerar o PDF
+        function generatePDF() {
+            const {
+                jsPDF
+            } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Configurações
+            const margin = 10; // Margem esquerda
+            let y = 20; // Posição vertical inicial
+            const lineHeight = 8; // Espaçamento entre as linhas (reduzido)
+            const maxHeight = 280; // Altura máxima da página antes de adicionar uma nova página
+
+            // Função para adicionar uma linha de texto
+            const addLine = (text, fontSize = 10) => {
+                if (y > maxHeight) {
+                    doc.addPage(); // Adiciona uma nova página
+                    y = 20; // Reinicia a posição vertical
+                }
+                doc.setFontSize(fontSize); // Define o tamanho da fonte
+                doc.text(text, margin, y);
+                y += lineHeight;
+            };
+
+            // Função para adicionar uma linha horizontal
+            const addSeparator = () => {
+                if (y > maxHeight) {
+                    doc.addPage(); // Adiciona uma nova página
+                    y = 20; // Reinicia a posição vertical
+                }
+                doc.setLineWidth(0.5); // Espessura da linha
+                doc.line(margin, y, 200 - margin, y); // Desenha a linha
+                y += lineHeight; // Espaço após a linha
+            };
+
+            // Captura os valores dos campos
+            const data = document.getElementById('data').value;
+            const patientName = document.getElementById('patient_id').value;
+            const medicalHistory = document.getElementById('medical_history').value;
+            const initialDemand = document.getElementById('initial_demand').value;
+            const treatmentGoals = document.getElementById('treatment_goals').value;
+            const evolution = document.getElementById('evolution').value;
+            const generalInfo = document.getElementById('general_info').value;
+
+            // Adiciona o título (fonte maior)
+            doc.setFontSize(16);
+            addLine("Detalhes do Prontuário", 16);
+            doc.setFontSize(10); // Volta ao tamanho padrão para o restante
+
+            // Adiciona informações do prontuário
+            addLine(`Data: ${data}`);
+            addLine(`Paciente: ${patientName}`);
+            y += lineHeight; // Espaço extra
+
+            // Histórico Médico
+            addLine("Histórico Médico:");
+            addLine(medicalHistory);
+            addSeparator(); // Linha separadora
+            y += lineHeight; // Espaço extra
+
+            // Demanda Inicial
+            addLine("Demanda Inicial:");
+            addLine(initialDemand);
+            addSeparator(); // Linha separadora
+            y += lineHeight; // Espaço extra
+
+            // Objetivos do Tratamento
+            addLine("Objetivos do Tratamento:");
+            addLine(treatmentGoals);
+            addSeparator(); // Linha separadora
+            y += lineHeight; // Espaço extra
+
+            // Evolução
+            addLine("Evolução:");
+            addLine(evolution);
+            addSeparator(); // Linha separadora
+            y += lineHeight; // Espaço extra
+
+            // Informações Gerais
+            addLine("Informações Gerais:");
+            addLine(generalInfo);
+            addSeparator(); // Linha separadora
+
+            // Salva o PDF
+            doc.save("prontuario.pdf");
+        }
+
         // Função para imprimir a página
         function printPage() {
             window.print(); // Abre a caixa de diálogo de impressão do navegador
