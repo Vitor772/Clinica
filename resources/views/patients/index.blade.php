@@ -40,8 +40,7 @@
                         value="{{ request()->input('responsable') }}">
                 </div>
             </div>
-            <a type="submit" style="background-color:#6c83c7;" class="btn btn-primary">Aplicar
-                Filtros</a>
+            <button type="submit" style="background-color:#6c83c7;" class="btn btn-primary">Aplicar Filtros</button>
         </div>
 
     </form>
